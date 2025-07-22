@@ -21,7 +21,10 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-
+        
+    - name: Create deployment package
+      run: zip -r deploy.zip . -x '*.git*'
+      
     - name: Deploy to Elastic Beanstalk
       uses: einaregilsson/beanstalk-deploy@v20
       with:
@@ -31,4 +34,4 @@ jobs:
         environment_name: flask-env
         version_label: ${{ github.sha }}
         region: ap-south-1
-        deployment_package: .
+        deployment_package: deploy.zip
